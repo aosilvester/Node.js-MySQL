@@ -88,56 +88,30 @@ function start() {
 
 
                     console.log(`
+{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 
-    ${chosenItem.product_name} quantity in stock
-    =========================
-            ${chosenItem.stock_quantity} at $${chosenItem.price} each
-    =========================
-    You have selected to purchase ${answer.bid} ${answer.choice}
+                                                ${chosenItem.product_name} quantity in stock
+                                                =========================
+                                                ${chosenItem.stock_quantity} at $${chosenItem.price} each
+                                                =========================
+                                            You have selected to purchase ${answer.bid} ${answer.choice}
+
+{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+
                     `);
                     // console.log(chosenItem)
                     var selectionAmount = answer.bid;
                     var storeQuantity = chosenItem.stock_quantity
                     if (selectionAmount > storeQuantity) {
-                        // mr burns tells them they tried to buy more than there is available
                         console.log(`
-                        
-                      
-          ######
-        ##      ### ####
-      ##          ## #  #
-     #      ##     ## #  #
-    #              # # #  #
-    #           #  #  # # #
-   #            #  ##  # ##
-   #               # # ## #
-   #   ##          # ##  ##
-   #         ##    #  #   #
-   #                # ### #
-   #           #    # #  #
-    #         ##     ## #
-    #        #  #       #
-     ##    ###  #        #
-     ######    ##        #
-     #   # #  #          #
-      # #  ####          #
-       #                 #
-       #                  #
-      #  #          ##    #
-      # # #       ## *    #
-     #    #      # *X#    #
-     #   #     *# X#       #
-     #  #     ## *#        ##
-    #  ##   ##* X  #      #  #
-    #  # ### X      #     #  ##
-    # #    *        #    #   ###
-    ###            # #   #   ####
-                  ##  # #    ####
-                  ###   #     ####
-                #################
-                        
-    "Insufficient quantity!"
-                        
+                      {{{{{{{}}}}}}}
+               {{{{{{{{{{{{{{}}}}}}}}}}}}}}                        
+{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}                       
+                "Insufficient quantity!"
+{{{{{{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}        
+               {{{{{{{{{{{{{{}}}}}}}}}}}}}}                        
+                      {{{{{{{}}}}}}}
+
                         `);
 
                         console.log(`
@@ -149,48 +123,51 @@ function start() {
     You have selected to purchase ${answer.bid} ${answer.choice}
                                         `);
 
-                        start();
-                    } else if (selectionAmount <= storeQuantity) {
-                        // if they select an item and it is in stock
-                        console.log("let me get that order placed for you!");
-
-                        var newStoreQuantity = storeQuantity - selectionAmount;
-
-                        var updateQueryStr = 'UPDATE products SET stock_quantity = ' + newStoreQuantity + ' WHERE item_id = ' + itemID;
-                        // console.log('updateQueryStr = ' + updateQueryStr);
-                    connection.query(updateQueryStr, function (err, data){
-                        if (err) throw err;
-                        console.log('Your order has been placed. Your total is $' + chosenItem.price * answer.bid)
-                    })
-                    inquirer.prompt([
-                        {
-                            name:"choice",
-                            type: "rawlist",
-                            message: "would you like to buy anything else?",
-                            choices: ["YES", "NO"]
-                        }
-                    ]).then(function(answer){
-                        if(answer === "no") {
-                            start()
-                        }
-                        else {
-                            console.log(`
-        =================================================================================  
-                Thank you for shopping at Bamazon! I hope you have a Bammin' Slammin' Beautiful day!
-        =================================================================================                    
-                            `);
-                            connection.end()
-                        }
-
-                    })
-                    }
-
+                                        start();
+                                    } else if (selectionAmount <= storeQuantity) {
+                                        // if they select an item and it is in stock
+                                        console.log("let me get that order placed for you!");
+                
+                                        var newStoreQuantity = storeQuantity - selectionAmount;
+                
+                                        var updateQueryStr = 'UPDATE products SET stock_quantity = ' + newStoreQuantity + ' WHERE item_id = ' + itemID;
+                                        // console.log('updateQueryStr = ' + updateQueryStr);
+                                    connection.query(updateQueryStr, function (err, data){
+                                        if (err) throw err;
+                                        console.log('Your order has been placed. Your total is $' + chosenItem.price * answer.bid)
+                                    })
+                                    inquirer.prompt([
+                                        {
+                                            name:"choice",
+                                            type: "rawlist",
+                                            message: "would you like to buy anything else?",
+                                            choices: ["YES", "NO"]
+                                        }
+                                        
+                                    ]
+                                    ).then(function(answer){
+                                        // console.log("answer: " + answer.choice);
+                                        // console.log("ans.reply: " + ans.reply);
+                                        if(answer.choice === "YES") {
+                                            start()
+                                        }
+                                        else {
+                                            console.log(`
+                        =================================================================================  
+                       Thank you for shopping at Bamazon! I hope you have a Bammin' Slammin' Beautiful day!
+                        =================================================================================                    
+                                            `);
+                                            connection.end()
+                                        }
+                
+                                    })
+                                    }
+                
+                                }
+                
+                
+                            )
+                    });
+                
+                
                 }
-
-
-            )
-    });
-
-
-}
-
